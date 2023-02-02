@@ -1,24 +1,31 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+there is an issue
+when you try to create a new account with a new address using the `has_one` in the `Account` model it will save.
 
-Things you may want to cover:
+when you try to create a new account with a new address using the `belongs_to` in `Address` model it will not save with the following error:
 
-* Ruby version
+```
+#<ActiveModel::Errors [#<ActiveModel::Error attribute=addressable, type=blank, options={:message=>:required}>]>
+```
 
-* System dependencies
+just try to run the following commands with the belongs_to in the `Address` model:
+```ruby
+acc = Account.new
+address = acc.build_main_location_address(line1: "adsf")
+address.valid?
+=> false
+address.errors
+=> #<ActiveModel::Errors [#<ActiveModel::Error attribute=addressable, type=blank, options={:message=>:required}>]>
+```
 
-* Configuration
+when you try to run the same commands with the `has_one` in the `Account` model it will save.
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+```ruby
+acc = Account.new
+address = acc.build_main_location_address(line1: "adsf")
+address.valid?
+=> true
+address.errors
+=> #<ActiveModel::Errors []>
+```
